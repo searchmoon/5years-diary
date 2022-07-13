@@ -11,7 +11,6 @@ const App2 = () => {
     setTextValue(e.target.value);
   }  
   const onAddBtnClick = (e) => {
-    e.preventDefault();
     dispatch(addTodoList({
       value: textValue,
       id: new Date().getTime(),
@@ -19,17 +18,16 @@ const App2 = () => {
       editing: false,
     }))
     setTextValue('');
-    // console.log(diaryLists)
   }
-  // const handleOnKeyPress = (e) => {
-  //   if(e.key == 'Enter'){
-  //     onAddBtnClick();
-  //   }
-  // }
+  const handleOnKeyUp = (e) => {
+    if(e.key == 'Enter'){
+      onAddBtnClick();
+    }
+  }
   
   return (
     <>
-      <input type="text"  value={textValue} onChange={onTextChange}></input>
+      <input type="text" onKeyUp={handleOnKeyUp} value={textValue} onChange={onTextChange}></input>
       <button onClick={onAddBtnClick}>+</button>
       <DiaryBoard2 />
     </>
