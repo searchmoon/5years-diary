@@ -1,8 +1,7 @@
 import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+// import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
-  ${reset}
   ol, ul, li{
     list-style: none;
   }
