@@ -1,36 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
+import { deleteTodoList, doneTodoList, editTodoList } from '../features/secondSlice';
+import { useDispatch } from 'react-redux';
+const DiaryList2 = ({list}) => {
+  const dispatch = useDispatch();
+  const [editText, setEditText] = useState(list.value);
+  const [listEditing, setListEditing] = useState(false);
 
-const DiaryList2 = ({list, setDiaryLists, diaryLists}) => {
   const onDoneList = (list) => {
-    setDiaryLists([...diaryLists.filter((item) => item.id !== list.id), {
+    dispatch(doneTodoList({
       value: list.value,
       id: list.id,
       isDone: !list.isDone,
-      editing: list.editing,
-    }].sort((a,b) => a.id-b.id))
-}
-  const onDeleteList = (list) => {
-    setDiaryLists(diaryLists.filter((item) => item.id !== list.id))
+    }))
   }
-  const onEditing = (list) => {
-    setDiaryLists([...diaryLists.filter((item) => item.id !== list.id), {
-      value: list.value,
+  const onEditing = () => {
+    setListEditing(!listEditing);
+  }
+  const onEditText = (e) => {
+    setEditText(e.target.value)
+  }
+  const onDoneEditing = (list) => {
+    dispatch(doneTodoList({
+      value: editText,
       id: list.id,
       isDone: list.isDone,
-      editing: !list.editing,
-    }].sort((a,b) => a.id-b.id))
+    }))
+    setListEditing(!listEditing);
   }
   return (
     <div>
       <Li isDone={list.isDone} key={list.id}>
-          {list.editing? <input value={list.value}></input>: list.value}
-          {list.editing ? 
-          <button onClick={() => onEditing(list)}>수정완료</button>:
+          {listEditing? <input onChange={onEditText} value={editText}></input>: list.value}
+          {listEditing ? 
+          <button onClick={() => onDoneEditing(list)}>수정완료</button>:
           <button onClick={() => onEditing(list)}>수정</button>
           }
           <button onClick={() => onDoneList(list)}>완료</button>
-          <button onClick={() => onDeleteList(list)}>-</button>
+          <button onClick={() => dispatch(deleteTodoList(list))}>-</button>
         </Li>
     </div>
   )
