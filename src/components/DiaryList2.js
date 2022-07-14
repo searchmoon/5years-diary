@@ -28,10 +28,17 @@ const DiaryList2 = ({list}) => {
     }))
     setListEditing(!listEditing);
   }
+
+  const handleOnKeyUp = (e) => {
+    if(e.key == 'Enter'){
+      onDoneEditing(list);
+    }
+  }
+
   return (
     <div>
       <Li isDone={list.isDone} key={list.id}>
-          {listEditing? <input onChange={onEditText} value={editText}></input>: list.value}
+          {listEditing? <input onChange={onEditText} onKeyUp={handleOnKeyUp} value={editText}></input>: list.value}
           {listEditing ? 
           <button onClick={() => onDoneEditing(list)}>수정완료</button>:
           <button onClick={() => onEditing(list)}>수정</button>
